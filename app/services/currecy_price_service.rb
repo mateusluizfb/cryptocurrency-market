@@ -11,7 +11,7 @@ class CurrecyPriceService
     parse_coin_prices HTTParty.get(url, headers: @headers).parsed_response
   end
 
-  def currency_to_coin(coin_value:, dollars:)
+  def dollar_to_coin(coin_value:, dollars:)
     (dollars / coin_value).round(4)
   end
 
