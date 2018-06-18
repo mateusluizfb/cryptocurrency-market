@@ -11,15 +11,35 @@ RSpec.describe CurrecyPriceService do
     let(:headers) { {"Content-Type" => "application/json"} }
 
     it "should call the cryptocompare API" do
-      url = "#{ENV['CRYPTO_COMPARE_API_URL']}/data/price?fsym=BTC&tsyms=USD"
+      url = "#{ENV['CRYPTO_COMPARE_API_URL']}/data/pricemulti?fsym=BTC&tsyms=USD"
       expect(HTTParty).to receive(:get).with(url, headers: headers)
       described_class.instance.coin_price(currencies: ["BTC"])
     end
 
-    it "should call the cryptocompare API with the currencies received in the argument" do
-      url = "#{ENV['CRYPTO_COMPARE_API_URL']}/data/price?fsym=BTC,ETH,BCH&tsyms=USD"
+    it "should call the cryptocompare API with the coins received in the argument" do
+      url = "#{ENV['CRYPTO_COMPARE_API_URL']}/data/pricemulti?fsym=BTC,ETH,BCH&tsyms=USD"
       expect(HTTParty).to receive(:get).with(url, headers: headers)
       described_class.instance.coin_price(currencies: ["BTC", "ETH", "BCH"])
+    end
+
+    it "should return coins prices" do
+      VCR.use_cassette "crypto_compare/coin_prices" do
+        prices = described_class.instance.coin_price(currencies: ["BTC", "ETH", "BCH"])
+        expect(prices).to eq([
+          {
+            coin_name: "BTC",
+            coin_price: 6723.89
+          },
+          {
+            coin_name: "ETH",
+            coin_price: 517.24
+          },
+          {
+            coin_name: "BCH",
+            coin_price: 888.3
+          },
+        ])
+      end
     end
   end
 end
