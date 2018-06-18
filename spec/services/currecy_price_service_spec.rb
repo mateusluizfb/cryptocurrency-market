@@ -45,4 +45,23 @@ RSpec.describe CurrecyPriceService do
       end
     end
   end
+
+  describe "#dolar_to_coin" do
+    describe "should return the equivalent quantity of the dollars in coin" do
+      it {
+        amount = described_class.instance.currency_to_coin(coin_value: 6735.51, dollars: 6.74)
+        expect(amount).to eq(0.001)
+      }
+
+      it {
+        amount = described_class.instance.currency_to_coin(coin_value: 887.31, dollars: 44.37)
+        expect(amount).to eq(0.05)
+      }
+
+      it {
+        amount = described_class.instance.currency_to_coin(coin_value: 517.92, dollars: 517.92)
+        expect(amount).to eq(1)
+      }
+    end
+  end
 end

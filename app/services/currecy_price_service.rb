@@ -11,6 +11,12 @@ class CurrecyPriceService
     parse_coin_prices HTTParty.get(url, headers: @headers).parsed_response
   end
 
+  def currency_to_coin(coin_value:, dollars:)
+    (dollars / coin_value).round(4)
+  end
+
+  private
+
   def parse_coin_prices(prices)
     prices.map {|k, v| {coin_name: k, coin_price: v["USD"]} }
   end
