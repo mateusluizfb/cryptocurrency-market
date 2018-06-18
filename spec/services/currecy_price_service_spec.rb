@@ -9,16 +9,19 @@ RSpec.describe CurrecyPriceService do
 
   describe "#coin_price" do
     let(:headers) { {"Content-Type" => "application/json"} }
+    let(:http_double) { instance_double(HTTParty::Response) }
 
     it "should call the cryptocompare API" do
-      url = "#{ENV['CRYPTO_COMPARE_API_URL']}/data/pricemulti?fsym=BTC&tsyms=USD"
-      expect(HTTParty).to receive(:get).with(url, headers: headers)
+      url = "#{ENV['CRYPTO_COMPARE_API_URL']}/data/pricemulti?fsyms=BTC&tsyms=USD"
+      expect(HTTParty).to receive(:get).with(url, headers: headers).and_return(http_double)
+      allow(http_double).to receive(:parsed_response).and_return([])
       described_class.instance.coin_price(currencies: ["BTC"])
     end
 
     it "should call the cryptocompare API with the coins received in the argument" do
-      url = "#{ENV['CRYPTO_COMPARE_API_URL']}/data/pricemulti?fsym=BTC,ETH,BCH&tsyms=USD"
-      expect(HTTParty).to receive(:get).with(url, headers: headers)
+      url = "#{ENV['CRYPTO_COMPARE_API_URL']}/data/pricemulti?fsyms=BTC,ETH,BCH&tsyms=USD"
+      expect(HTTParty).to receive(:get).with(url, headers: headers).and_return(http_double)
+      allow(http_double).to receive(:parsed_response).and_return([])
       described_class.instance.coin_price(currencies: ["BTC", "ETH", "BCH"])
     end
 
