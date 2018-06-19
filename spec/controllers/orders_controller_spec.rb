@@ -8,5 +8,10 @@ RSpec.describe OrdersController, type: :controller do
       new_order
       expect(response).to have_http_status :ok
     end
+
+    it "should have an order instance variable" do
+      new_order
+      expect(assigns(:order)).to_not be_blank
+    end
   end
 end
