@@ -7,6 +7,10 @@ class OrdersController < ApplicationController
   end
 
   def create
+    @order = Order.new params.require(:order).permit(:owner_email, :coin_name, :dollar_value)
+    @order.coin_amount = 0
+    @order.save
     head :created
   end
+
 end

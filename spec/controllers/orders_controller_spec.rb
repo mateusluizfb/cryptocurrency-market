@@ -30,5 +30,10 @@ RSpec.describe OrdersController, type: :controller do
       create_order
       expect(response).to have_http_status :created
     end
+
+    it "should create an order" do
+      create_order
+      expect(Order.count).to eq 1
+    end
   end
 end
