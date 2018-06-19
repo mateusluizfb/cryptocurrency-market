@@ -1,18 +1,18 @@
 <div class="container">
-  <%= form_for @order, as: :post, url: "" do |f| %>
+  <%= form_for @order, url: create_order_path do |f| %>
     <div class="form-group">
       <label for="owner_email">Your email</label>
-      <%= f.text_field :owner_email, class: "form-control" %>
+      <%= f.email_field :owner_email, class: "form-control", required: true %>
     </div>
 
     <div class="form-group">
       <label for="coin_name">Select the coin</label>
-      <%= f.select :coin_name, @coins_prices.collect {|coin| coin[:coin_name] }, {}, {class: "form-control"} %>
+      <%= f.select :coin_name, options_for_select(@coins_prices.collect {|coin| coin[:coin_name] }), {multiple: true}, {class: "form-control"} %>
     </div>
 
     <div class="form-group">
       <label for="coin_name">Value in dollars</label>
-      <%= f.number_field :dollar_value, class: "form-control" %>
+      <%= f.text_field :dollar_value, class: "form-control", required: true %>
     </div>
 
     <div class="form-group">

@@ -1,0 +1,44 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Date:
+      - Tue, 19 Jun 2018 23:40:41 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Cache-Control:
+      - public, max-age=29
+      Cryptocompare-Cache-Hit:
+      - 'false'
+    body:
+      encoding: UTF-8
+      string: '{"BTC":{"USD":6735.25}}'
+    http_version: 
+  recorded_at: Tue, 19 Jun 2018 23:40:35 GMT
+recorded_with: VCR 4.0.0
