@@ -3,5 +3,7 @@ Rails.application.routes.draw do
   root to: "crypto_currencies#prices"
 
   get "/crypto_currencies/prices", to: "crypto_currencies#prices"
+
   get "/orders/new", to: "orders#new"
+  post "/orders/create", to: "orders#create"
 end

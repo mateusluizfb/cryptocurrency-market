@@ -14,4 +14,21 @@ RSpec.describe OrdersController, type: :controller do
       expect(assigns(:order)).to_not be_blank
     end
   end
+
+  describe "POST #create" do
+    let(:order_params) {{
+      order: {
+        owner_email: "fulano@email.com",
+        coin_name: "fulano@email.com",
+        dollar_value: 55.10
+      }
+    }}
+
+    subject(:create_order) { post :create, params: order_params }
+
+    it "should return 201" do
+      create_order
+      expect(response).to have_http_status :created
+    end
+  end
 end
