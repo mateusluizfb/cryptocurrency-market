@@ -19,7 +19,7 @@ RSpec.describe CryptoCurrenciesController, type: :controller do
       get_prices
     end
 
-    it "should have an currencies instance variable" do
+    it "should have a currencies instance variable" do
       get_prices
       expect(assigns(:coins_prices)).to_not be_empty
     end
