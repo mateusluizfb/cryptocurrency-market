@@ -15,10 +15,16 @@
           <td> <%= order.coin_name %> </td>
           <td> <%= order.coin_amount %> </td>
           <td> <%= order.dollar_value %> </td>
-          <td> <%= order.created_at %> </td>
+          <td> <%= order.created_at.strftime("%F") %> </td>
         </tr>
         <% end %>
       </tbody>
     </table>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <%= link_to "Home", root_path, class: "btn btn-warning" %>
+      <%= link_to "Buy", new_order_path, class: "btn btn-success" %>
+    </div>
   </div>
 </div>

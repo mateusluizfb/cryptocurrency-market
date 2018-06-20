@@ -12,7 +12,7 @@ class OrdersController < ApplicationController
     @order.coin_name = amount[:coin_name]
     @order.coin_amount = amount[:coin_amount]
     @order.save
-    head :created
+    redirect_to orders_path(email: @order.owner_email)
   end
 
   def index
