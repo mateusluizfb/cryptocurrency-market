@@ -7,7 +7,7 @@
 
     <div class="form-group">
       <label for="coin_name">Select the coin</label>
-      <%= f.select :coin_name, options_for_select(@coins_prices.collect {|coin| coin[:coin_name] }), {multiple: true}, {class: "form-control"} %>
+      <%= select :coin, :data, options_for_select(@coins_prices.collect {|coin| ["#{coin[:coin_name]} - $#{coin[:coin_price]}", "#{coin[:coin_name]}:#{coin[:coin_price]}"] }), {}, {class: "form-control"} %>
     </div>
 
     <div class="form-group">

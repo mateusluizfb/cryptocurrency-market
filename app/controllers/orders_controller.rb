@@ -8,16 +8,21 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new order_params
-    @order.coin_amount = set_coin_amount(@order.dollar_value, @order.coin_name)
+    amount = coin_amount_data(@order.dollar_value, params[:coin][:data])
+    @order.coin_name = amount[:coin_name]
+    @order.coin_amount = amount[:coin_amount]
     @order.save
     head :created
   end
 
   private
 
-  def set_coin_amount(dollars, coin_name)
-    coins_prices = CurrecyPriceService.instance.coin_price currencies: [coin_name]
-    CurrecyPriceService.instance.dollar_to_coin dollars: dollars, coin_value: coins_prices.first[:coin_price]
+  def coin_amount_data(dollars, coin_data)
+    coin_name, coin_value = coin_data.split(":")
+    {
+      coin_name:   coin_name,
+      coin_amount: CurrecyPriceService.instance.dollar_to_coin(dollars: dollars, coin_value: coin_value.to_f)
+    }
   end
 
   def order_params

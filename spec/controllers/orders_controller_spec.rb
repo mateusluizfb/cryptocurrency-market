@@ -19,8 +19,10 @@ RSpec.describe OrdersController, type: :controller do
     let(:order_params) {{
       order: {
         owner_email: "fulano@email.com",
-        coin_name: "BTC",
-        dollar_value: 55.10
+        dollar_value: 50.1
+      },
+      coin: {
+        data: "BTC:6735.25"
       }
     }}
 
@@ -40,15 +42,13 @@ RSpec.describe OrdersController, type: :controller do
       expect(Order.count).to eq 1
     end
 
-    it "should consult the coin price" do
-      expect_any_instance_of(CurrecyPriceService).to receive(:coin_price)
-        .and_return([{coin_name: "BTC", coin_price: 6735.25}])
-      create_order
-    end
-
-    it "should calculate the order price" do
+    it "should calculate the coin ammount" do
       expect_any_instance_of(CurrecyPriceService).to receive(:dollar_to_coin)
       create_order
     end
+  end
+
+  describe "GET #show" do
+
   end
 end
