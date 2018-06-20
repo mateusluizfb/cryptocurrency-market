@@ -49,6 +49,11 @@ RSpec.describe OrdersController, type: :controller do
   end
 
   describe "GET #show" do
+    subject(:show_orders) { get :show, params: { email: "fulano@email.com" } }
 
+    it "should respond 200 ok" do
+      show_orders
+      expect(response).to have_http_status :ok
+    end
   end
 end
