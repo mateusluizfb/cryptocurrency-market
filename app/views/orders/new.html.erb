@@ -12,7 +12,7 @@
 
     <div class="form-group">
       <label for="coin_name">Value in dollars</label>
-      <%= f.text_field :dollar_value, class: "form-control", required: true %>
+      <%= f.number_field :dollar_value, class: "form-control", step: ".001", required: true %>
     </div>
 
     <div class="form-group">
