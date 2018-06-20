@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <table class="table">
+      <thead>
+        <th>ID</th>
+        <th>Coin name</th>
+        <th>Amount purchased</th>
+        <th>Value in dollars</th>
+        <th>Date of the purchase</th>
+      </thead>
+      <tbody>
+        <% @orders.each do |order| %>
+        <tr>
+          <td> <%= order.id %> </td>
+          <td> <%= order.coin_name %> </td>
+          <td> <%= order.coin_amount %> </td>
+          <td> <%= order.dollar_value %> </td>
+          <td> <%= order.created_at %> </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

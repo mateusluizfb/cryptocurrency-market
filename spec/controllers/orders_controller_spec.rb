@@ -57,7 +57,10 @@ RSpec.describe OrdersController, type: :controller do
     end
 
     it "should search orders by email" do
-      expect(Order).to receive(:find_by).with(owner_email: "fulano@email.com")
+      relation = double(ActiveRecord::Relation)
+      expect(Order).to receive(:by_email).with("fulano@email.com")
+        .and_return(relation)
+      allow(relation).to receive(:all)
       show_orders
     end
 

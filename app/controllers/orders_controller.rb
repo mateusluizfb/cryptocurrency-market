@@ -16,7 +16,7 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = Order.find_by owner_email: params[:email]
+    @orders = Order.by_email(params[:email]).all
   end
 
   private
