@@ -49,11 +49,22 @@ RSpec.describe OrdersController, type: :controller do
   end
 
   describe "GET #index" do
-    subject(:show_orders) { get :show, params: { email: "fulano@email.com" } }
+    subject(:show_orders) { get :index, params: { email: "fulano@email.com" } }
 
     it "should respond 200 ok" do
       show_orders
       expect(response).to have_http_status :ok
+    end
+
+    it "should search orders by email" do
+      expect(Order).to receive(:find_by).with(owner_email: "fulano@email.com")
+      show_orders
+    end
+
+    it "should have an orders instance variable" do
+      FactoryBot.create :order, owner_email: "fulano@email.com"
+      show_orders
+      expect(assigns(:orders)).to_not be_blank
     end
   end
 end
