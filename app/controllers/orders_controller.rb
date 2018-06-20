@@ -15,6 +15,9 @@ class OrdersController < ApplicationController
     head :created
   end
 
+  def index
+  end
+
   private
 
   def coin_amount_data(dollars, coin_data)

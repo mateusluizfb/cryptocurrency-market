@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   get "/crypto_currencies/prices", to: "crypto_currencies#prices"
 
-  get "/orders/new", to: "orders#new"
+  get "/orders",         to: "orders#index"
+  get "/orders/new",     to: "orders#new"
   post "/orders/create", to: "orders#create", as: :create_order
 end
