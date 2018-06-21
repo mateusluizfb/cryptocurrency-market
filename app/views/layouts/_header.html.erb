@@ -2,7 +2,7 @@
   <div class="container">
     <%= link_to "CryptoCurrency Market", root_path, class: "navbar-brand" %>
     <%= form_tag orders_path, method: :get, class: "form-inline" do |f| %>
-      <%= email_field_tag :email, nil, placeholder: "My email", class: "form-control mr-sm-2" %>
+      <%= email_field_tag :email, nil, placeholder: "My email", class: "form-control mr-sm-2", required: true %>
       <%= submit_tag "Wallet", class: "btn btn-outline-info my-2 my-sm-0" %>
     <% end %>
   </div>
