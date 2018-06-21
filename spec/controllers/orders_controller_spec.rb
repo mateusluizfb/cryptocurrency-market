@@ -2,7 +2,11 @@ require "rails_helper"
 
 RSpec.describe OrdersController, type: :controller do
   describe "GET #new" do
-    subject(:new_order) { get :new }
+    subject(:new_order) {
+      VCR.use_cassette "crypto_compare/coin_prices" do
+        get :new
+      end
+    }
 
     it "should return 200 ok" do
       new_order
@@ -32,9 +36,9 @@ RSpec.describe OrdersController, type: :controller do
       end
     }
 
-    it "should return 201" do
+    it "should return 301" do
       create_order
-      expect(response).to have_http_status :created
+      expect(response).to have_http_status :redirect
     end
 
     it "should create an order" do
@@ -45,6 +49,14 @@ RSpec.describe OrdersController, type: :controller do
     it "should calculate the coin ammount" do
       expect_any_instance_of(CurrecyPriceService).to receive(:dollar_to_coin)
       create_order
+    end
+
+    it "should be errors for inconsistent coin price" do
+      VCR.use_cassette "crypto_compare/btc_coin_price" do
+        order_params[:coin][:data] = "BTC:6740.25"
+        post :create, params: order_params
+        expect(flash[:error]).to eq "Coin current price is not updated or it's wrong"
+      end
     end
   end
 
