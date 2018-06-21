@@ -27,19 +27,27 @@ RSpec.describe CurrecyPriceService do
 
     it "should return coins prices" do
       VCR.use_cassette "crypto_compare/coin_prices" do
-        prices = described_class.instance.coin_price(currencies: ["BTC", "ETH", "BCH"])
+        prices = described_class.instance.coin_price(currencies: ["BTC", "ETH", "BCH", "LTC", "EOS"])
         expect(prices).to eq([
           {
             coin_name: "BTC",
-            coin_price: 6723.89
+            coin_price: 6772.85
           },
           {
             coin_name: "ETH",
-            coin_price: 517.24
+            coin_price: 541.37
           },
           {
             coin_name: "BCH",
-            coin_price: 888.3
+            coin_price: 900.71
+          },
+          {
+            coin_name: "LTC",
+            coin_price: 98.66
+          },
+          {
+            coin_name: "EOS",
+            coin_price: 10.69
           },
         ])
       end
