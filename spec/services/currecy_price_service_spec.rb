@@ -64,4 +64,19 @@ RSpec.describe CurrecyPriceService do
       }
     end
   end
+
+  describe "#coin_price_consitent?" do
+    it "should return true for consistent price" do
+      VCR.use_cassette "crypto_compare/btc_coin_price" do
+        expect(described_class.instance.coin_price_consitent?(coin_name: "BTC", price: 6735.30)).to be_truthy
+      end
+    end
+
+    it "should return false for inconsistent price" do
+      VCR.use_cassette "crypto_compare/btc_coin_price" do
+        expect(described_class.instance.coin_price_consitent?(coin_name: "BTC", price: 6737.30)).to be_falsy
+      end
+    end
+
+  end
 end
