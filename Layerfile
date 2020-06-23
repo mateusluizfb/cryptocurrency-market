@@ -1,0 +1,50 @@
+#This is an example LayerCI configuration for Django!
+FROM vm/ubuntu:18.04
+
+# To note: Layerfiles create staging servers, *not* containers!
+
+# Install postgresql and run it in the background
+RUN apt-get update && \
+    apt-get install postgresql postgresql-contrib nginx curl gpg ca-certificates \
+       git-core zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev \
+       libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev \
+       software-properties-common libffi-dev libpq-dev
+
+# Volta is a convenient way to install node and yarn
+RUN curl https://get.volta.sh | bash
+RUN volta install node yarn
+
+RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+ENV PATH=$HOME/.rbenv/bin:$PATH
+RUN echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+
+RUN git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+RUN echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+
+RUN rbenv install 2.4.4
+ENV PATH=$HOME/.rbenv/versions/2.4.4/bin:$PATH
+
+COPY . .
+RUN gem install bundle
+RUN bundle install
+
+ENV RAILS_ENV=test
+
+RUN sudo -u postgres createuser -s -i -d -r -l -w root
+RUN sudo -u postgres -H -- psql -t -c "CREATE DATABASE mydb;"
+RUN sudo -u postgres -H -- psql -c "ALTER ROLE root WITH PASSWORD 'password';"
+
+# set up database
+RUN echo -e 'test:\n\
+  adapter: postgresql\n\
+  encoder: unicode\n\
+  database: mydb\n\
+  username: root\n\
+  password: password\n' > config/database.yml
+
+# run migrations
+RUN rake db:migrate
+
+# Start the server
+RUN BACKGROUND rails server
+EXPOSE WEBSITE localhost:3000
