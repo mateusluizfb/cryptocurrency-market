@@ -8,10 +8,7 @@ RUN apt-get update && \
     apt-get install postgresql postgresql-contrib nginx curl gpg ca-certificates \
        git-core zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev \
        libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev \
-       software-properties-common libffi-dev libpq-dev
-
-COPY docker-compose.yml .
-RUN docker-compose up -d
+       software-properties-common libffi-dev libpq-dev docker-compose
 
 # Volta is a convenient way to install node and yarn
 RUN curl https://get.volta.sh | bash
@@ -33,19 +30,23 @@ RUN bundle install
 
 ENV RAILS_ENV=test
 
-RUN sudo -u postgres createuser -s -i -d -r -l -w root
-RUN sudo -u postgres -H -- psql -t -c "CREATE DATABASE mydb;"
-RUN sudo -u postgres -H -- psql -c "ALTER ROLE root WITH PASSWORD 'password';"
+RUN service postgresql stop
+RUN docker-compose up -d
+
+# RUN sudo -u postgres createuser -s -i -d -r -l -w root
+# RUN sudo -u postgres -H -- psql -t -c "CREATE DATABASE mydb;"
+# RUN sudo -u postgres -H -- psql -c "ALTER ROLE root WITH PASSWORD 'password';"
 
 # set up database
-RUN echo -e 'test:\n\
-  adapter: postgresql\n\
-  encoder: unicode\n\
-  database: mydb\n\
-  username: root\n\
-  password: password\n' > config/database.yml
+# RUN echo -e 'test:\n\
+#   adapter: postgresql\n\
+#   encoder: unicode\n\
+#   database: mydb\n\
+#   username: root\n\
+#   password: password\n' > config/database.yml
 
 # run migrations
+RUN rake db:create
 RUN rake db:migrate
 
 # run tests
