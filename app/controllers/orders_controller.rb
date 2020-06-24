@@ -25,6 +25,7 @@ class OrdersController < ApplicationController
   def set_order_coin_data
     amount = coin_amount_data(@order.dollar_value, params[:coin][:data])
     return flash[:error] = amount[:error] if amount[:error]
+
     @order.coin_name = amount[:coin_name]
     @order.coin_amount = amount[:coin_amount]
   end
@@ -34,6 +35,7 @@ class OrdersController < ApplicationController
     unless CurrecyPriceService.instance.coin_price_consitent? coin_name: coin_name, price: coin_value.to_f
       return {error: "Coin current price is not updated or it's wrong"}
     end
+
     {
       coin_name:   coin_name,
       coin_amount: CurrecyPriceService.instance.dollar_to_coin(dollars: dollars, coin_value: coin_value.to_f)
