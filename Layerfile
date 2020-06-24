@@ -45,6 +45,12 @@ RUN echo -e 'test:\n\
 # run migrations
 RUN rake db:migrate
 
+# run linter
+RUN bundle exec rubocop
+
+# run tests
+RUN bundle exec rspec
+
 # Start the server
 RUN BACKGROUND rails server
 EXPOSE WEBSITE localhost:3000
