@@ -5,7 +5,7 @@ FROM vm/ubuntu:18.04
 
 # Install postgresql and run it in the background
 RUN apt-get update && \
-    apt-get install postgresql postgresql-contrib nginx curl gpg ca-certificates \
+    apt-get install nginx curl gpg ca-certificates \
        git-core zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev \
        libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev \
        software-properties-common libffi-dev libpq-dev docker-compose
@@ -26,6 +26,7 @@ ENV PATH=$HOME/.rbenv/versions/2.4.4/bin:$PATH
 
 COPY . .
 RUN gem install bundle
+RUN ls
 RUN bundle install
 
 ENV RAILS_ENV=test
@@ -46,8 +47,8 @@ RUN docker-compose up -d
 #   password: password\n' > config/database.yml
 
 # run migrations
-RUN rake db:create
-RUN rake db:migrate
+RUN bundle exec rake db:setup
+RUN bundle exec rake dw:db:setup
 
 # run tests
 RUN bundle exec rspec
