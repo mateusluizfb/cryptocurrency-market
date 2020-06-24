@@ -17,7 +17,10 @@ class CurrecyPriceService
 
   def coin_price_consitent?(coin_name:, price:)
     prices = coin_price(currencies: [coin_name])
-    (prices.first[:coin_price] <= (price + 2)) && (prices.first[:coin_price] >= (price - 2))
+    (
+      prices.first[:coin_price] <= (price + 2)) &&
+      (prices.first[:coin_price] >= (price - 2)
+    )
   end
 
   private
