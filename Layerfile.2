@@ -45,8 +45,8 @@ RUN echo -e 'test:\n\
 # run migrations
 RUN rake db:migrate
 
-# run tests
-RUN bundle exec rspec
+# run linter
+RUN bundle exec rubocop
 
 # Start the server
 RUN BACKGROUND rails server
