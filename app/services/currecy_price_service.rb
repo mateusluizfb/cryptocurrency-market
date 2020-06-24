@@ -23,7 +23,6 @@ class CurrecyPriceService
   private
 
   def parse_coin_prices(prices)
-    prices
-      .map {|k, v| {coin_name: k, coin_price: v["USD"]} }
+    prices.map {|k, v| {coin_name: k, coin_price: v["USD"]} }
   end
 end
