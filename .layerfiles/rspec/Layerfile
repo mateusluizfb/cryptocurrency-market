@@ -10,6 +10,9 @@ RUN apt-get update && \
        libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev \
        software-properties-common libffi-dev libpq-dev
 
+COPY docker-compose.yml docker-compose.yml
+RUN docker-compose up -d
+
 # Volta is a convenient way to install node and yarn
 RUN curl https://get.volta.sh | bash
 RUN volta install node yarn
