@@ -24,27 +24,14 @@ RUN echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
 RUN rbenv install 2.4.4
 ENV PATH=$HOME/.rbenv/versions/2.4.4/bin:$PATH
 
-COPY . .
+COPY ../.. .
 RUN gem install bundle
 RUN ls
 RUN bundle install
 
 ENV RAILS_ENV=test
 
-RUN service postgresql stop
 RUN docker-compose up -d
-
-# RUN sudo -u postgres createuser -s -i -d -r -l -w root
-# RUN sudo -u postgres -H -- psql -t -c "CREATE DATABASE mydb;"
-# RUN sudo -u postgres -H -- psql -c "ALTER ROLE root WITH PASSWORD 'password';"
-
-# set up database
-# RUN echo -e 'test:\n\
-#   adapter: postgresql\n\
-#   encoder: unicode\n\
-#   database: mydb\n\
-#   username: root\n\
-#   password: password\n' > config/database.yml
 
 # run migrations
 RUN bundle exec rake db:setup
